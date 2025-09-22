@@ -15,6 +15,34 @@ type Article = {
   description: string;
 };
 
+// Typy surowych danych ze Strapi
+type StrapiImage = {
+  url: string;
+};
+
+type StrapiArticle = {
+  id: number;
+  attributes: {
+    title: string;
+    slug: string;
+    publishedAt: string;
+    description?: string;
+    cover?: StrapiImage;
+  };
+};
+
+type StrapiResponse<T> = {
+  data: T[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+};
+
 export default function Blog() {
   const searchParams = useSearchParams();
   const pageParam = searchParams?.get("page") || "1";
@@ -27,24 +55,22 @@ export default function Blog() {
   useEffect(() => {
     async function fetchArticles() {
       try {
-        const data = await strapiFetch(
+        const data: StrapiResponse<StrapiArticle> = await strapiFetch(
           `/articles?sort=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
         );
 
-        // Mapujemy dane z API do prostego typu Article
-        const mappedArticles: Article[] = (data.data || []).map(
-          (article: any) => ({
-            id: article.id,
-            title: article.title,
-            slug: article.slug,
-            publishedAt: article.publishedAt,
-            coverUrl: article.cover?.url || null,
-            description: article.description || "",
-          })
-        );
+        // Mapowanie do prostego typu Article
+        const mappedArticles: Article[] = data.data.map((article) => ({
+          id: article.id,
+          title: article.attributes.title,
+          slug: article.attributes.slug,
+          publishedAt: article.attributes.publishedAt,
+          coverUrl: article.attributes.cover?.url || null,
+          description: article.attributes.description || "",
+        }));
 
         setArticles(mappedArticles);
-        setPageCount(data.meta?.pagination?.pageCount || 1);
+        setPageCount(data.meta.pagination.pageCount);
       } catch (err) {
         console.error("Błąd pobierania artykułów:", err);
         setArticles([]);
