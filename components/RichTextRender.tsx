@@ -21,7 +21,13 @@ interface RichTextBlock {
   content?: RichTextBlock[]; // dla content.text
 }
 
-type StrapiBlock = RichTextBlock | { __component: string; [key: string]: any };
+// Bezpieczny typ dla dynamicznych bloków Strapi
+type StrapiBlock =
+  | RichTextBlock
+  | {
+      __component: string;
+      [key: string]: string | undefined | StrapiBlock[] | boolean | number;
+    };
 
 interface RichTextRenderProps {
   content: StrapiBlock[];
@@ -30,7 +36,6 @@ interface RichTextRenderProps {
 export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
   if (!content || content.length === 0) return null;
 
-  // Funkcja renderująca dzieci – typ React.ReactNode
   const renderChildren = (children?: RichTextChild[]): React.ReactNode => {
     if (!children) return null;
 
@@ -74,26 +79,23 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
     });
   };
 
-  // Funkcja renderująca blok – typ React.ReactNode
   const renderBlock = (block: StrapiBlock, idx: number): React.ReactNode => {
     // content.text
     if (block.__component === "content.text" && Array.isArray(block.content)) {
-      return block.content.map((b: StrapiBlock, i: number) =>
-        renderBlock(b, i)
-      );
+      return block.content.map((b, i) => renderBlock(b, i));
     }
 
     // media.img-blog
-    if (block.__component === "media.img-blog" && "url" in block && block.url) {
-      return (
-        <div key={idx} className="my-4 text-center">
-          <img
-            src={block.url}
-            alt={block.alt || ""}
-            className="img-fluid rounded-3"
-          />
-        </div>
-      );
+    if (block.__component === "media.img-blog") {
+      const url = typeof block.url === "string" ? block.url : undefined;
+      const alt = typeof block.alt === "string" ? block.alt : "";
+      if (url) {
+        return (
+          <div key={idx} className="my-4 text-center">
+            <img src={url} alt={alt} className="img-fluid rounded-3" />
+          </div>
+        );
+      }
     }
 
     // Bloki tekstowe
@@ -122,11 +124,9 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
             : "ul";
         return (
           <Tag key={idx} className="mt-3 ps-4">
-            {block.children?.map((child: RichTextChild, i: number) =>
+            {(block.children as RichTextChild[])?.map((child, i) =>
               child.type === "list-item" ? (
-                <li key={i} className="mb-1">
-                  {renderChildren(child.children)}
-                </li>
+                <li key={i}>{renderChildren(child.children)}</li>
               ) : null
             )}
           </Tag>
@@ -142,11 +142,5 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
     }
   };
 
-  return (
-    <>
-      {content.map((block: StrapiBlock, idx: number) =>
-        renderBlock(block, idx)
-      )}
-    </>
-  );
+  return <>{content.map((block, idx) => renderBlock(block, idx))}</>;
 };

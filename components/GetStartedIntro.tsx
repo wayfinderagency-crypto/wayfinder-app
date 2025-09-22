@@ -14,7 +14,7 @@ export default function GetStartedIntro({ onNext }: GetStartedIntroProps) {
         Let&apos;s get to know you & see if we can be of help.
       </p>
       <button className="btn fs-5 btn-lg px-4 rounded-5" onClick={onNext}>
-        Let's go!
+        Let&apos;s go!
       </button>
     </div>
   );
