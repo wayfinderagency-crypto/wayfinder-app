@@ -1,10 +1,15 @@
+type Step3Fields = "hasOnlyFans" | "blockedCountries" | "pictures";
+
 type Step3Props = {
   data: {
     hasOnlyFans: boolean;
     blockedCountries: string;
     pictures: FileList | null;
   };
-  onChange: (field: string, value: any) => void;
+  onChange: (
+    field: Step3Fields,
+    value: boolean | string | FileList | null
+  ) => void;
 };
 
 export default function Step3({ data, onChange }: Step3Props) {

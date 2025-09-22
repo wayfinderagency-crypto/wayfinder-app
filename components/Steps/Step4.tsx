@@ -1,6 +1,8 @@
+type Step4Fields = "phone" | "socialMedia";
+
 type Step4Props = {
   data: { phone: string; socialMedia: string };
-  onChange: (field: string, value: any) => void;
+  onChange: (field: Step4Fields, value: string) => void;
 };
 
 export default function Step4({ data, onChange }: Step4Props) {

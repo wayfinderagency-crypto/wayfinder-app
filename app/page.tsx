@@ -167,7 +167,7 @@ export default function HomePage() {
             </div>
             <div className="row pt-3">
               <div className="col text-center">
-                <span className="text-pink fs-5">Expret's Pick:</span>
+                <span className="text-pink fs-5">Expret&apos;s Pick:</span>
                 <p className="fs-5">Top Rated OnlyFans Agency</p>
               </div>
             </div>
@@ -222,9 +222,9 @@ export default function HomePage() {
                   <i className="fa-solid fa-user-plus d-block text-center display-3 mb-3"></i>
                   <h1 className="display-5 mb-4 fw-bold">Fan Conversion</h1>
                   <p className="fs-5">
-                    It’s not only about followers, it’s about loyal subscribers.
-                    Our methods turn casual viewers into paying fans, building a
-                    stable and scalable income.
+                    It&apos;s not only about followers, it&apos;s about loyal
+                    subscribers. Our methods turn casual viewers into paying
+                    fans, building a stable and scalable income.
                   </p>
                   <Link href="/how-we-work">
                     <button className="btn fs-5 px-4 rounded-5">
@@ -488,8 +488,8 @@ export default function HomePage() {
                   >
                     <div className="faq-answer">
                       No, not at all. Many creators stay anonymous and still
-                      build loyal communities. Together we’ll create a strategy
-                      that matches your comfort level and boundaries.
+                      build loyal communities. Together we&apos;ll create a
+                      strategy that matches your comfort level and boundaries.
                     </div>
                   </div>
                 </div>

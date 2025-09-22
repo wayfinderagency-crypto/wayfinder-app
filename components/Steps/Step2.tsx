@@ -1,3 +1,5 @@
+type Step2Fields = "timeAvailable" | "origin" | "contentType" | "startDate";
+
 type Step2Props = {
   data: {
     timeAvailable: string;
@@ -5,7 +7,7 @@ type Step2Props = {
     contentType: string;
     startDate: string;
   };
-  onChange: (field: string, value: any) => void;
+  onChange: (field: Step2Fields, value: string) => void;
 };
 
 export default function Step2({ data, onChange }: Step2Props) {

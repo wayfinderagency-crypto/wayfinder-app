@@ -1,6 +1,8 @@
+type Step1Fields = "fullName" | "email" | "age";
+
 type Step1Props = {
   data: { fullName: string; email: string; age: string };
-  onChange: (field: string, value: any) => void;
+  onChange: (field: Step1Fields, value: string) => void;
 };
 
 export default function Step1({ data, onChange }: Step1Props) {

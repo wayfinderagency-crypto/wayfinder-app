@@ -41,10 +41,14 @@ function FormContent() {
     phonesCount: "1",
   });
 
+  // ✅ Typ do wartości formularza
+  type FormValue = string | boolean | FileList | null;
+
   const step1Valid =
     formData.fullName.trim() !== "" && formData.email.trim() !== "";
 
-  const handleChange = (field: string, value: any) => {
+  // ✅ Zmieniono tylko typ value, aby usunąć any
+  const handleChange = (field: string, value: FormValue) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

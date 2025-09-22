@@ -1,7 +1,7 @@
 import React from "react";
 
 interface RichTextChild {
-  type: "text" | "link";
+  type: "text" | "link" | "list-item";
   text?: string;
   bold?: boolean;
   italic?: boolean;
@@ -11,31 +11,30 @@ interface RichTextChild {
 }
 
 interface RichTextBlock {
-  type:
-    | "paragraph"
-    | "heading"
-    | "list"
-    | "numbered-list"
-    | "list-item"
-    | string;
+  type?: "paragraph" | "heading" | "list" | "numbered-list" | string;
   level?: number;
   children?: RichTextChild[] | RichTextBlock[];
   format?: "ordered" | "unordered";
   url?: string; // dla obrazów w media.img-blog
   alt?: string;
+  __component?: string; // dla dynamic zone z Strapi
+  content?: RichTextBlock[]; // dla content.text
 }
 
+type StrapiBlock = RichTextBlock | { __component: string; [key: string]: any };
+
 interface RichTextRenderProps {
-  content: any[]; // cała dynamic zone z Strapi
+  content: StrapiBlock[];
 }
 
 export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
   if (!content || content.length === 0) return null;
 
-  const renderChildren = (children?: RichTextChild[]) => {
+  // Funkcja renderująca dzieci – typ React.ReactNode
+  const renderChildren = (children?: RichTextChild[]): React.ReactNode => {
     if (!children) return null;
 
-    return children.map((child, i) => {
+    return children.map((child: RichTextChild, i: number) => {
       let node: React.ReactNode = child.text ?? "";
 
       if (child.type === "link" && child.url) {
@@ -75,14 +74,17 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
     });
   };
 
-  const renderBlock = (block: any, idx: number) => {
-    // Komponenty typu content.text
+  // Funkcja renderująca blok – typ React.ReactNode
+  const renderBlock = (block: StrapiBlock, idx: number): React.ReactNode => {
+    // content.text
     if (block.__component === "content.text" && Array.isArray(block.content)) {
-      return block.content.map((b: any, i: number) => renderBlock(b, i));
+      return block.content.map((b: StrapiBlock, i: number) =>
+        renderBlock(b, i)
+      );
     }
 
-    // Komponenty typu media.img-blog
-    if (block.__component === "media.img-blog" && block.url) {
+    // media.img-blog
+    if (block.__component === "media.img-blog" && "url" in block && block.url) {
       return (
         <div key={idx} className="my-4 text-center">
           <img
@@ -101,14 +103,14 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
         return React.createElement(
           `h${lvl}`,
           { key: idx, className: "mt-4 mb-2 fw-semibold" },
-          renderChildren(block.children)
+          renderChildren(block.children as RichTextChild[])
         );
       }
 
       case "paragraph":
         return (
           <p key={idx} className="mt-3 fs-5">
-            {renderChildren(block.children)}
+            {renderChildren(block.children as RichTextChild[])}
           </p>
         );
 
@@ -120,7 +122,7 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
             : "ul";
         return (
           <Tag key={idx} className="mt-3 ps-4">
-            {block.children?.map((child: any, i: number) =>
+            {block.children?.map((child: RichTextChild, i: number) =>
               child.type === "list-item" ? (
                 <li key={i} className="mb-1">
                   {renderChildren(child.children)}
@@ -132,9 +134,19 @@ export const RichTextRender: React.FC<RichTextRenderProps> = ({ content }) => {
       }
 
       default:
-        return <div key={idx}>{renderChildren(block.children)}</div>;
+        return (
+          <div key={idx}>
+            {renderChildren(block.children as RichTextChild[])}
+          </div>
+        );
     }
   };
 
-  return <>{content.map((block, idx) => renderBlock(block, idx))}</>;
+  return (
+    <>
+      {content.map((block: StrapiBlock, idx: number) =>
+        renderBlock(block, idx)
+      )}
+    </>
+  );
 };

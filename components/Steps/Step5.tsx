@@ -1,6 +1,8 @@
+type Step5Fields = "tiktok60" | "phonesCount";
+
 type Step5Props = {
   data: { tiktok60: boolean; phonesCount: string };
-  onChange: (field: string, value: any) => void;
+  onChange: (field: Step5Fields, value: boolean | string) => void;
 };
 
 export default function Step5({ data, onChange }: Step5Props) {
