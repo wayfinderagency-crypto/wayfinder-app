@@ -1,11 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { strapiFetch } from "@/lib/strapi"; // fetch do Strapi Cloud
+import { strapiFetch } from "@/lib/strapi";
 
-// Typ artykułu po zmapowaniu
 type Article = {
   id: number;
   title: string;
@@ -15,10 +10,7 @@ type Article = {
   description: string;
 };
 
-// Typy surowych danych ze Strapi
-type StrapiImage = {
-  url: string;
-};
+type StrapiImage = { url: string };
 
 type StrapiArticle = {
   id: number;
@@ -43,42 +35,36 @@ type StrapiResponse<T> = {
   };
 };
 
-export default function Blog() {
-  const searchParams = useSearchParams();
-  const pageParam = searchParams?.get("page") || "1";
+type Props = {
+  searchParams: { page?: string };
+};
+
+export default async function BlogPage({ searchParams }: Props) {
+  const pageParam = searchParams?.page ?? "1";
   const page = parseInt(pageParam);
   const pageSize = 5;
 
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [pageCount, setPageCount] = useState(1);
+  let articles: Article[] = [];
+  let pageCount = 1;
 
-  useEffect(() => {
-    async function fetchArticles() {
-      try {
-        const data: StrapiResponse<StrapiArticle> = await strapiFetch(
-          `/articles?sort=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
-        );
+  try {
+    const data: StrapiResponse<StrapiArticle> = await strapiFetch(
+      `/articles?sort=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
+    );
 
-        // Mapowanie do prostego typu Article
-        const mappedArticles: Article[] = data.data.map((article) => ({
-          id: article.id,
-          title: article.attributes.title,
-          slug: article.attributes.slug,
-          publishedAt: article.attributes.publishedAt,
-          coverUrl: article.attributes.cover?.url || null,
-          description: article.attributes.description || "",
-        }));
+    articles = data.data.map((article) => ({
+      id: article.id,
+      title: article.attributes.title,
+      slug: article.attributes.slug,
+      publishedAt: article.attributes.publishedAt,
+      coverUrl: article.attributes.cover?.url || null,
+      description: article.attributes.description || "",
+    }));
 
-        setArticles(mappedArticles);
-        setPageCount(data.meta.pagination.pageCount);
-      } catch (err) {
-        console.error("Błąd pobierania artykułów:", err);
-        setArticles([]);
-      }
-    }
-
-    fetchArticles();
-  }, [page]);
+    pageCount = data.meta.pagination.pageCount;
+  } catch (err) {
+    console.error("Błąd pobierania artykułów:", err);
+  }
 
   return (
     <section className="container-fluid blog pt-5">
@@ -126,16 +112,13 @@ export default function Blog() {
             </div>
           ))}
 
-          {/* Paginacja */}
           {pageCount > 1 && (
             <div className="d-flex justify-content-center my-4 gap-2">
               {Array.from({ length: pageCount }).map((_, idx) => (
                 <Link
                   key={idx}
                   href={`/blog?page=${idx + 1}`}
-                  className={`btn fs-5 btn-lg px-3 rounded-3 ${
-                    idx + 1 === page ? "btn-primary" : "btn-outline-primary"
-                  }`}
+                  className={`btn fs-5 btn-lg px-3 rounded-3 ${idx + 1 === page ? "btn-primary" : "btn-outline-primary"}`}
                 >
                   {idx + 1}
                 </Link>
