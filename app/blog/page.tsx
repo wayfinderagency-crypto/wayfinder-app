@@ -5,32 +5,43 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { strapiFetch } from "@/lib/strapi"; // fetch do Strapi Cloud
 
+// Typ artykułu po zmapowaniu
+type Article = {
+  id: number;
+  title: string;
+  slug: string;
+  publishedAt: string;
+  coverUrl: string | null;
+  description: string;
+};
+
 export default function Blog() {
   const searchParams = useSearchParams();
   const pageParam = searchParams?.get("page") || "1";
   const page = parseInt(pageParam);
   const pageSize = 5;
 
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [pageCount, setPageCount] = useState(1);
 
   useEffect(() => {
     async function fetchArticles() {
       try {
-        // Pobieramy pełne dane z komponentami i media
         const data = await strapiFetch(
           `/articles?sort=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
         );
 
-        // Mapujemy artykuły do prostszej struktury
-        const mappedArticles = (data.data || []).map((article: any) => ({
-          id: article.id,
-          title: article.title,
-          slug: article.slug,
-          publishedAt: article.publishedAt,
-          coverUrl: article.cover?.url || null,
-          description: article.description || "",
-        }));
+        // Mapujemy dane z API do prostego typu Article
+        const mappedArticles: Article[] = (data.data || []).map(
+          (article: any) => ({
+            id: article.id,
+            title: article.title,
+            slug: article.slug,
+            publishedAt: article.publishedAt,
+            coverUrl: article.cover?.url || null,
+            description: article.description || "",
+          })
+        );
 
         setArticles(mappedArticles);
         setPageCount(data.meta?.pagination?.pageCount || 1);
