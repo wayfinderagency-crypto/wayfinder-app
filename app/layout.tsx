@@ -48,7 +48,7 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body style={{ margin: 0 }}>
+      <body className="bg-white text-black" style={{ margin: 0 }}>
         <ClientWrapper>{children}</ClientWrapper>
         <CookieConsent />
         <Footer />

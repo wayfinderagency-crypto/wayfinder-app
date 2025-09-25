@@ -69,32 +69,37 @@ export default function HomePage() {
                   variants={item}
                   className="display-3 fw-bold text-pink"
                 >
-                  More Money
+                  Your name
                 </motion.h1>
                 <motion.h1
                   variants={item}
                   className="display-3 fw-bold text-white"
                 >
-                  More Success
+                  Your face
                 </motion.h1>
                 <motion.h1
                   variants={item}
                   className="display-3 fw-bold text-pink"
                 >
-                  With Us Only
+                  Our strategy
+                </motion.h1>
+                <motion.h1
+                  variants={item}
+                  className="display-3 fw-bold text-white"
+                >
+                  Unstoppable
                 </motion.h1>
                 <motion.p variants={item} className="fs-5 mt-4 text-white">
-                  At Wayfinder agency, we help creators unlock their true
-                  potential on OnlyFans. Our approach blends personalized
-                  strategies, audience insights, and consistent support to
-                  ensure growth that feels authentic and sustainable.
+                  Most agencies manage creators. We create icons. Our system
+                  scales your revenue, grows your audience, and protects your
+                  energy
                 </motion.p>
                 <Link href="/get-started">
                   <motion.button
                     variants={item}
                     className="btn fs-5 btn-lg px-4 rounded-5 mt-5"
                   >
-                    Get started
+                    Book Your Free Strategy Call
                   </motion.button>
                 </Link>
               </motion.div>
@@ -109,7 +114,7 @@ export default function HomePage() {
         exit="hidden"
         variants={sectionVariants}
       >
-        <section className="expert-choice py-1 py-md-5">
+        <section className="expert-choice py-1 py-md-5 bg-white">
           <div className="container-fluid">
             <div className="row align-items-center">
               <div className="col logos d-flex">
