@@ -48,6 +48,8 @@ export default async function BlogPage({ searchParams }: Props) {
       `/articles?sort=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
     );
 
+    console.log("Strapi response:", JSON.stringify(data, null, 2));
+
     articles = data.data.map((article) => ({
       id: article.id,
       title: article.title,
