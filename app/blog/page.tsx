@@ -10,17 +10,13 @@ type Article = {
   description: string;
 };
 
-type StrapiImage = { url: string };
-
 type StrapiArticle = {
   id: number;
-  attributes: {
-    title: string;
-    slug: string;
-    publishedAt: string;
-    description?: string;
-    cover?: StrapiImage;
-  };
+  title: string;
+  slug: string;
+  publishedAt: string;
+  description?: string;
+  cover?: { url: string };
 };
 
 type StrapiResponse<T> = {
@@ -54,11 +50,11 @@ export default async function BlogPage({ searchParams }: Props) {
 
     articles = data.data.map((article) => ({
       id: article.id,
-      title: article.attributes.title,
-      slug: article.attributes.slug,
-      publishedAt: article.attributes.publishedAt,
-      coverUrl: article.attributes.cover?.url || null,
-      description: article.attributes.description || "",
+      title: article.title,
+      slug: article.slug,
+      publishedAt: article.publishedAt,
+      coverUrl: article.cover?.url || null,
+      description: article.description || "",
     }));
 
     pageCount = data.meta.pagination.pageCount;
