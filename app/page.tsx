@@ -55,8 +55,8 @@ export default function HomePage() {
       <section className="hero d-flex align-items-center py-5 container-fluid position-relative">
         <video autoPlay muted loop className="hero-video">
           <source
-            src="https://res.cloudinary.com/da8w3pd4f/video/upload/v1756062782/Bikini_Model_Video_Ready_fieosc.mp4"
-            type="video/mp4"
+            src="https://res.cloudinary.com/da8w3pd4f/video/upload/v1758825088/Bikini_Model_Video_Ready_z68nps.webm"
+            type="video/webm"
           />
           Your browser does not support the video tag.
         </video>
@@ -479,7 +479,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq1"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         Do I have to show my face to be successful on OnlyFans?
                       </strong>
@@ -491,7 +491,7 @@ export default function HomePage() {
                     id="faq1"
                     data-bs-parent="#faqAccordion1"
                   >
-                    <div className="faq-answer">
+                    <div className="faq-answer ">
                       No, not at all. Many creators stay anonymous and still
                       build loyal communities. Together we&apos;ll create a
                       strategy that matches your comfort level and boundaries.
@@ -507,7 +507,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq3"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         How much time will I need to invest if I work with an
                         agency?
@@ -537,7 +537,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq5"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         Will I stay in full control of my profile?
                       </strong>
@@ -567,7 +567,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq2"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         How much can I earn by working with an agency?
                       </strong>
@@ -596,7 +596,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq4"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         Is working with an agency safe and discreet?
                       </strong>
@@ -623,7 +623,7 @@ export default function HomePage() {
                     aria-expanded="false"
                     aria-controls="faq6"
                   >
-                    <span className="question">
+                    <span className="question text-black">
                       <strong>
                         I have no social media experience - is that a problem?
                       </strong>
