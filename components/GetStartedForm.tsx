@@ -79,7 +79,10 @@ function FormContent() {
         fd.append(key, String(val));
       }
     });
-
+    console.log("FormData being sent:");
+    for (const [key, val] of fd.entries()) {
+      console.log(key, val);
+    }
     const res = await fetch("/api/contact", {
       method: "POST",
       body: fd,

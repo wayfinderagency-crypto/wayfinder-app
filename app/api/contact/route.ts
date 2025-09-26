@@ -4,7 +4,6 @@ import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// --- Schema formularza ---
 const FormSchema = z.object({
   fullName: z
     .string()
@@ -65,7 +64,10 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    console.log("Raw FormData:");
+    for (const [key, val] of formData.entries()) {
+      console.log(key, val);
+    }
     // --- konwersja formData -> obiekt ---
     const rawValues: Record<string, string> = {};
     formData.forEach((value, key) => {
