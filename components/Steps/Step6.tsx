@@ -1,7 +1,7 @@
 export default function Step6({ onRestart }: { onRestart: () => void }) {
   return (
     <div className="text-center text-black">
-      <i className="fa-solid fa-paper-plane text-black d-block mx-auto display-4 mb-3"></i>
+      <i className="fa-solid fa-paper-plane text-pink d-block mx-auto display-4 mb-3"></i>
       <h2 className="fw-bold">
         Form <span className="text-pink">submitted</span>!
       </h2>
