@@ -12,6 +12,7 @@ import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
 import Step5 from "./Steps/Step5";
+import Step6 from "./Steps/Step6";
 
 const stepVariants = {
   initial: { opacity: 0, x: 50 },
@@ -20,11 +21,11 @@ const stepVariants = {
 };
 
 function FormContent() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(1);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     fullName: "",
     email: "",
     age: "",
@@ -39,21 +40,26 @@ function FormContent() {
     socialMedia: "",
     tiktok60: false,
     phonesCount: "1",
-  });
+  };
 
-  // ✅ Typ do wartości formularza
+  const [formData, setFormData] = useState(initialFormData);
+
   type FormValue = string | boolean | FileList | null;
 
   const step1Valid =
     formData.fullName.trim() !== "" && formData.email.trim() !== "";
 
-  // ✅ Zmieniono tylko typ value, aby usunąć any
   const handleChange = (field: string, value: FormValue) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 5));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setStep(1);
+  };
 
   const handleSubmit = async () => {
     if (!executeRecaptcha) return;
@@ -64,7 +70,6 @@ function FormContent() {
     const fd = new FormData();
     fd.append("recaptcha-token", token);
 
-    // dodaj wszystkie pola tekstowe
     Object.entries(formData).forEach(([key, val]) => {
       if (key === "pictures" && val instanceof FileList) {
         Array.from(val).forEach((file) => {
@@ -83,7 +88,8 @@ function FormContent() {
     const data = await res.json();
 
     if (data.success) {
-      alert("Form submitted successfully ✅");
+      setFormData(initialFormData);
+      setStep(6);
     } else {
       alert("Failed ❌");
     }
@@ -149,35 +155,51 @@ function FormContent() {
               <Step5 data={formData} onChange={handleChange} />
             </motion.div>
           )}
+          {step === 6 && (
+            <motion.div
+              key="step6"
+              variants={stepVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Step6 onRestart={resetForm} />
+            </motion.div>
+          )}
         </AnimatePresence>
 
-        <div className="mt-5 d-flex justify-content-between w-100">
-          {step > 1 ? (
-            <button className="btn fs-5 px-4 rounded-5 w-45" onClick={prevStep}>
-              Previous
-            </button>
-          ) : (
-            <div style={{ width: "45%" }} />
-          )}
+        {step < 6 && (
+          <div className="mt-5 d-flex justify-content-between w-100">
+            {step > 1 ? (
+              <button
+                className="btn fs-5 px-4 rounded-5 w-45"
+                onClick={prevStep}
+              >
+                Previous
+              </button>
+            ) : (
+              <div style={{ width: "45%" }} />
+            )}
 
-          {step < 5 ? (
-            <button
-              className="btn fs-5 px-4 rounded-5 w-45"
-              onClick={nextStep}
-              disabled={step === 1 && !step1Valid}
-            >
-              Next
-            </button>
-          ) : (
-            <button
-              className="btn btn-second fs-5 px-4 rounded-5 w-45"
-              onClick={handleSubmit}
-              disabled={loading}
-            >
-              {loading ? "Sending..." : "Submit"}
-            </button>
-          )}
-        </div>
+            {step < 5 ? (
+              <button
+                className="btn fs-5 px-4 rounded-5 w-45"
+                onClick={nextStep}
+                disabled={step === 1 && !step1Valid}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                className="btn btn-second fs-5 px-4 rounded-5 w-45"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? "Sending..." : "Submit"}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
