@@ -20,31 +20,30 @@ const stepVariants = {
   exit: { opacity: 0, x: -50 },
 };
 
+const initialFormData = {
+  fullName: "",
+  email: "",
+  age: "",
+  timeAvailable: "",
+  origin: "",
+  contentType: "",
+  startDate: "",
+  hasOnlyFans: false,
+  blockedCountries: "",
+  pictures: null as FileList | null,
+  phone: "",
+  socialMedia: "",
+  tiktok60: false,
+  phonesCount: "1",
+};
+
+type FormValue = string | boolean | FileList | null;
+
 function FormContent() {
   const [step, setStep] = useState<number>(1);
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const [loading, setLoading] = useState(false);
-
-  const initialFormData = {
-    fullName: "",
-    email: "",
-    age: "",
-    timeAvailable: "",
-    origin: "",
-    contentType: "",
-    startDate: "",
-    hasOnlyFans: false,
-    blockedCountries: "",
-    pictures: null as FileList | null,
-    phone: "",
-    socialMedia: "",
-    tiktok60: false,
-    phonesCount: "1",
-  };
-
   const [formData, setFormData] = useState(initialFormData);
-
-  type FormValue = string | boolean | FileList | null;
+  const [loading, setLoading] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const step1Valid =
     formData.fullName.trim() !== "" && formData.email.trim() !== "";
@@ -62,9 +61,13 @@ function FormContent() {
   };
 
   const handleSubmit = async () => {
-    if (!executeRecaptcha) return;
+    if (!executeRecaptcha) {
+      alert("Recaptcha not ready, try again");
+      return;
+    }
 
     setLoading(true);
+
     const token = await executeRecaptcha("form_submit");
 
     const fd = new FormData();
@@ -72,31 +75,43 @@ function FormContent() {
 
     Object.entries(formData).forEach(([key, val]) => {
       if (key === "pictures" && val instanceof FileList) {
-        Array.from(val).forEach((file) => {
-          fd.append("pictures", file);
-        });
+        Array.from(val).forEach((file) => fd.append("pictures", file));
       } else if (val !== null) {
-        fd.append(key, String(val));
+        if (typeof val === "boolean") {
+          fd.append(key, val ? "true" : "false");
+        } else {
+          fd.append(key, String(val));
+        }
       }
     });
+
     console.log("FormData being sent:");
     for (const [key, val] of fd.entries()) {
       console.log(key, val);
     }
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      body: fd,
-    });
 
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: fd,
+      });
 
-    if (data.success) {
-      setFormData(initialFormData);
-      setStep(6);
-    } else {
-      alert("Failed ❌");
+      const data = await res.json();
+
+      if (data.success) {
+        setStep(6); // przejście do Step6
+        setFormData(initialFormData); // reset formularza
+      } else {
+        alert(
+          "Submission failed: " + JSON.stringify(data.errors || data.message)
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Unexpected error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
