@@ -1,5 +1,5 @@
 * {
-  font-family: "Comfortaa", sans-serif !important;
+  font-family: "Comfortaa", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -20,7 +20,7 @@
   }
 }
 p {
-  font-family: "Karla", sans-serif !important;
+  font-family: "Karla", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -322,7 +322,7 @@ p {
 
 .cta-bg {
   position: relative;
-  background-image: url("https://res.cloudinary.com/da8w3pd4f/image/upload/v1758825328/Gemini_Generated_Image_6xjx556xjx556xjx_wcgff3.webp");
+  background-image: url("https://res.cloudinary.com/da8w3pd4f/image/upload/v1759001077/Gemini_Generated_Image_6xjx556xjx556xjx_1_r95jhv.webp");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;

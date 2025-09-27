@@ -55,7 +55,7 @@ export default function HomePage() {
       <section className="hero d-flex align-items-center py-5 container-fluid position-relative">
         <video autoPlay muted loop className="hero-video">
           <source
-            src="https://res.cloudinary.com/da8w3pd4f/video/upload/v1758825088/Bikini_Model_Video_Ready_z68nps.webm"
+            src="https://res.cloudinary.com/da8w3pd4f/video/upload/v1759001231/Bikini_Model_Video_Ready_2_h5txod.webm"
             type="video/webm"
           />
           Your browser does not support the video tag.
@@ -297,7 +297,7 @@ export default function HomePage() {
                     >
                       <div className="card-body p-2 p-md-3 text-center">
                         <i
-                          className={`fa-brands ${platform.icon} d-block custom-fs-icon`}
+                          className={`fa-brands ${platform.icon} d-block custom-fs-icon mx-auto`}
                         ></i>
                         <p className="card-text custom-fs mt-3">
                           {platform.label}
@@ -320,7 +320,7 @@ export default function HomePage() {
                     >
                       <div className="card-body p-2 p-md-3 text-center">
                         <i
-                          className={`fa-brands ${platform.icon} d-block custom-fs-icon`}
+                          className={`fa-brands ${platform.icon} d-block custom-fs-icon mx-auto`}
                         ></i>
                         <p className="card-text custom-fs mt-3">
                           {platform.label}
@@ -342,7 +342,7 @@ export default function HomePage() {
                     >
                       <div className="card-body p-2 p-md-3 text-center">
                         <i
-                          className={`fa-brands ${platform.icon} d-block custom-fs-icon`}
+                          className={`fa-brands ${platform.icon} d-block custom-fs-icon mx-auto`}
                         ></i>
                         <p className="card-text custom-fs mt-3">
                           {platform.label}

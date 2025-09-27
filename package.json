@@ -10,6 +10,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.1",
     "@react-email/render": "^1.2.3",
     "bootstrap": "^5.3.7",
     "formidable": "^3.5.4",
