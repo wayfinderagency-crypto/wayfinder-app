@@ -61,19 +61,19 @@ export default function HomePage() {
           Your browser does not support the video tag.
         </video>
         <div className="hero-opacity"></div>
-        <div className="container">
+        <div className="container mt-5 mt-md-0">
           <div className="row">
             <div className="col-12 col-md-7">
               <motion.div variants={container} initial="hidden" animate="show">
                 <motion.h1
                   variants={item}
-                  className="display-5 fw-bold text-white"
+                  className="fs-1 display-md-5 fw-bold text-white"
                 >
                   You want more income but are tired of endless chatting.
                 </motion.h1>
                 <motion.h1
                   variants={item}
-                  className="display-5 fw-bold text-pink"
+                  className="display-md-5 fs-1 fw-bold text-pink"
                 >
                   No content ideas, and agencies you can&apos;t trust?
                 </motion.h1>
@@ -86,7 +86,7 @@ export default function HomePage() {
                 <Link href="/get-started">
                   <motion.button
                     variants={item}
-                    className="btn fs-5 btn-lg px-4 rounded-5 mt-5"
+                    className="btn fs-5 btn-lg px-4 rounded-5 mt-2 mt-md-5"
                   >
                     Book Your Free Strategy Call
                   </motion.button>
@@ -657,7 +657,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Script src="/js/copy-slider.js" strategy="lazyOnload" />
+      <Script src="/js/copy-slider.js" strategy="afterInteractive" />
       <HomeCollapse />
       <StickyScrollEffect />
     </>

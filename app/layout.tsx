@@ -3,12 +3,26 @@ import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import "./style.css";
+import { Comfortaa, Karla } from "next/font/google";
 
 import Footer from "@/components/Footer";
 import BootstrapClient from "@/components/BootstrapClient";
 import ClientWrapper from "@/components/ClientWrapper";
 import NavbarScrollEffect from "@/components/NavbarScrollEffect";
 import CookieConsent from "@/components/CookieConsent";
+
+const comfortaa = Comfortaa({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const karla = Karla({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -31,16 +45,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Karla:ital,wght@0,200..800;1,200..800&display=swap"
-          rel="stylesheet"
-        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -49,7 +53,10 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="bg-white text-black" style={{ margin: 0 }}>
+      <body
+        className={`bg-white text-black ${comfortaa.className}`}
+        style={{ margin: 0 }}
+      >
         <ClientWrapper>{children}</ClientWrapper>
         <CookieConsent />
         <Footer />

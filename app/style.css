@@ -1,5 +1,5 @@
 * {
-  font-family: "Comfortaa", sans-serif;
+  font-family: "Comfortaa", sans-serif !important;
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -13,7 +13,12 @@
     width: 75% !important;
   }
 }
-
+@media (min-width: 768px) {
+  /* md breakpoint */
+  .display-md-5 {
+    font-size: 1.5rem;
+  }
+}
 p {
   font-family: "Karla", sans-serif !important;
   font-optical-sizing: auto;
@@ -166,7 +171,7 @@ p {
 }
 
 .sticky {
-  background-image: url("https://res.cloudinary.com/da8w3pd4f/image/upload/v1757870266/46757_mexvcu.jpg");
+  background-image: url("https://res.cloudinary.com/da8w3pd4f/image/upload/v1758998157/46757_mexvcu_qv1g9d.webp");
   background-position: center;
   background-size: cover;
 }

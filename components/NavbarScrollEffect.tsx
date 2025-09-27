@@ -6,14 +6,26 @@ export default function NavbarScrollEffect() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname !== "/") return; // działa tylko na home
+    const navbar = document.querySelector(".navbar");
+    const navLinks = document.querySelectorAll(".nav-link");
 
+    if (!navbar) return;
+
+    // 🔹 Domyślne style na wszystkich stronach poza "/"
+    if (pathname !== "/") {
+      navbar.classList.remove("bg-transparent");
+      navbar.classList.add("bg-white");
+
+      navLinks.forEach((link) => {
+        link.classList.remove("text-white");
+        link.classList.add("text-dark");
+      });
+
+      return; // koniec — bez scroll effect
+    }
+
+    // 🔹 Scroll effect tylko na "/"
     const handleScroll = () => {
-      const navbar = document.querySelector(".navbar");
-      const navLinks = document.querySelectorAll(".nav-link");
-
-      if (!navbar) return;
-
       if (window.scrollY > 50) {
         navbar.classList.remove("bg-transparent");
         navbar.classList.add("bg-white");
@@ -35,11 +47,13 @@ export default function NavbarScrollEffect() {
 
     window.addEventListener("scroll", handleScroll);
 
-    // cleanup przy odmontowaniu komponentu
+    // wywołaj od razu żeby ustawić stan przy wejściu na stronę
+    handleScroll();
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [pathname]);
 
-  return null; // komponent nie renderuje nic, tylko efekt scroll
+  return null;
 }
