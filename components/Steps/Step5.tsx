@@ -1,7 +1,7 @@
 type Step5Fields = "tiktok60" | "phonesCount";
 
 type Step5Props = {
-  data: { tiktok60: boolean; phonesCount: string };
+  data: { tiktok: boolean; phonesCount: string };
   onChange: (field: Step5Fields, value: boolean | string) => void;
 };
 
@@ -13,7 +13,7 @@ export default function Step5({ data, onChange }: Step5Props) {
           type="checkbox"
           className="form-check-input"
           id="tikTok60"
-          checked={data.tiktok60}
+          checked={data.tiktok}
           onChange={(e) => onChange("tiktok60", e.target.checked)}
         />
         <label className="form-check-label fs-5" htmlFor="tikTok60">

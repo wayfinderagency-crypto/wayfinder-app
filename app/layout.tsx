@@ -13,12 +13,13 @@ import CookieConsent from "@/components/CookieConsent";
 export const metadata: Metadata = {
   title: {
     default: "Wayfinder",
-    template: "%s | Mój Blog",
+    template: "%s | Agency",
   },
   icons: {
     icon: "https://res.cloudinary.com/da8w3pd4f/image/upload/v1757858809/ChatGPT-Image-Sep-10_-2025_-09_55_45-PM_kyzipw.webp",
   },
-  description: "Blog oparty o Strapi + Next.js",
+  description:
+    "Wayfinder Agency is the leading OnlyFans agency in the USA, UK, and Australia. We provide professional OnlyFans management, marketing, and growth support for content creators, influencers, and models.",
   metadataBase: new URL("http://localhost:3000"),
 };
 

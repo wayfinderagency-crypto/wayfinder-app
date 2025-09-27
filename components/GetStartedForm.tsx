@@ -33,7 +33,7 @@ const initialFormData = {
   pictures: null as FileList | null,
   phone: "",
   socialMedia: "",
-  tiktok60: false,
+  tiktok: false,
   phonesCount: "1",
 };
 

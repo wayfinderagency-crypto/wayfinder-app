@@ -63,36 +63,25 @@ export default function HomePage() {
         <div className="hero-opacity"></div>
         <div className="container">
           <div className="row">
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-7">
               <motion.div variants={container} initial="hidden" animate="show">
                 <motion.h1
                   variants={item}
-                  className="display-3 fw-bold text-pink"
+                  className="display-5 fw-bold text-white"
                 >
-                  Your name
+                  You want more income but are tired of endless chatting.
                 </motion.h1>
                 <motion.h1
                   variants={item}
-                  className="display-3 fw-bold text-white"
+                  className="display-5 fw-bold text-pink"
                 >
-                  Your face
-                </motion.h1>
-                <motion.h1
-                  variants={item}
-                  className="display-3 fw-bold text-pink"
-                >
-                  Our strategy
-                </motion.h1>
-                <motion.h1
-                  variants={item}
-                  className="display-3 fw-bold text-white"
-                >
-                  Unstoppable
+                  No content ideas, and agencies you can&apos;t trust?
                 </motion.h1>
                 <motion.p variants={item} className="fs-5 mt-4 text-white">
-                  Most agencies manage creators. We create icons. Our system
-                  scales your revenue, grows your audience, and protects your
-                  energy
+                  We fix that with 24/7 chatting handled by our team, creative
+                  content strategies designed for you, and full transparency
+                  that keeps you in control. No broken promises, no risks. Just
+                  growth you can rely on
                 </motion.p>
                 <Link href="/get-started">
                   <motion.button

@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       console.log(key, val);
     }
 
-    // reCAPTCHA
     const token = formData.get("recaptcha-token")?.toString();
     if (!token) {
       return NextResponse.json(
@@ -35,7 +34,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Walidacja Zod
     const FormSchema = z.object({
       fullName: z.string().min(1),
       email: z.string().email(),
@@ -51,7 +49,7 @@ export async function POST(req: Request) {
       blockedCountries: z.string().optional().default(""),
       phone: z.string().optional().default(""),
       socialMedia: z.string().optional().default(""),
-      tiktok60: z
+      tiktok: z
         .union([z.string(), z.boolean()])
         .transform((v) => v === "true" || v === true)
         .default(false),
