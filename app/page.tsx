@@ -423,7 +423,7 @@ export default function HomePage() {
                 alt="OF chart"
                 width={900}
                 height={600}
-                className="w-100 rounded-5 border border-danger-subtle"
+                className="d-block w-100 hww-img rounded-5 border-pink"
               />
             </div>
             <div className="col rounded-5 bg-pink-second p-3 p-md-5">

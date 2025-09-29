@@ -1,4 +1,4 @@
-type Step5Fields = "tiktok60" | "phonesCount";
+type Step5Fields = "tiktok" | "phonesCount";
 
 type Step5Props = {
   data: { tiktok: boolean; phonesCount: string };
@@ -11,10 +11,10 @@ export default function Step5({ data, onChange }: Step5Props) {
       <div className="form-check mb-3">
         <input
           type="checkbox"
-          className="form-check-input"
+          className="form-check-input bg-pink"
           id="tikTok60"
           checked={data.tiktok}
-          onChange={(e) => onChange("tiktok60", e.target.checked)}
+          onChange={(e) => onChange("tiktok", e.target.checked)}
         />
         <label className="form-check-label fs-5" htmlFor="tikTok60">
           Are you able to produce 60 TikToks per day?

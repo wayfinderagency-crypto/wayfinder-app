@@ -8,49 +8,66 @@ export default function NavbarScrollEffect() {
   useEffect(() => {
     const navbar = document.querySelector(".navbar");
     const navLinks = document.querySelectorAll(".nav-link");
+    const collapse = document.getElementById("navbarNav");
 
     if (!navbar) return;
 
-    // 🔹 Domyślne style na wszystkich stronach poza "/"
-    if (pathname !== "/") {
-      navbar.classList.remove("bg-transparent");
-      navbar.classList.add("bg-white");
+    // 🔹 Funkcja: ustaw navbar biały (czarny hamburger + linki)
+    const setWhite = () => {
+      navbar.classList.remove("bg-transparent", "navbar-dark");
+      navbar.classList.add("bg-white", "navbar-light");
 
       navLinks.forEach((link) => {
         link.classList.remove("text-white");
         link.classList.add("text-dark");
       });
+    };
 
-      return; // koniec — bez scroll effect
+    // 🔹 Funkcja: ustaw navbar transparentny (biały hamburger + linki)
+    const setTransparent = () => {
+      navbar.classList.add("bg-transparent", "navbar-dark");
+      navbar.classList.remove("bg-white", "navbar-light");
+
+      navLinks.forEach((link) => {
+        link.classList.add("text-white");
+        link.classList.remove("text-dark");
+      });
+    };
+
+    // 🔹 Jeżeli nie jesteśmy na homepage → zawsze biały navbar
+    if (pathname !== "/") {
+      setWhite();
+      return;
     }
 
-    // 🔹 Scroll effect tylko na "/"
+    // 🔹 Scroll effect tylko na homepage
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        navbar.classList.remove("bg-transparent");
-        navbar.classList.add("bg-white");
-
-        navLinks.forEach((link) => {
-          link.classList.remove("text-white");
-          link.classList.add("text-dark");
-        });
+        setWhite();
       } else {
-        navbar.classList.add("bg-transparent");
-        navbar.classList.remove("bg-white");
-
-        navLinks.forEach((link) => {
-          link.classList.add("text-white");
-          link.classList.remove("text-dark");
-        });
+        // tylko jeśli menu nie jest otwarte
+        if (!collapse?.classList.contains("show")) {
+          setTransparent();
+        }
       }
     };
 
+    // 🔹 Obsługa otwierania/zamykania menu mobilnego
+    const handleShow = () => setWhite();
+    const handleHide = () => {
+      if (window.scrollY <= 50) setTransparent();
+    };
+
+    collapse?.addEventListener("shown.bs.collapse", handleShow);
+    collapse?.addEventListener("hidden.bs.collapse", handleHide);
     window.addEventListener("scroll", handleScroll);
 
-    // wywołaj od razu żeby ustawić stan przy wejściu na stronę
+    // ustawienie stanu przy wejściu
     handleScroll();
 
     return () => {
+      collapse?.removeEventListener("shown.bs.collapse", handleShow);
+      collapse?.removeEventListener("hidden.bs.collapse", handleHide);
       window.removeEventListener("scroll", handleScroll);
     };
   }, [pathname]);

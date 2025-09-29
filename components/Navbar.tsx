@@ -28,7 +28,7 @@ export default function Navbar({ onGetStarted }: NavbarProps) {
       initial="hidden"
       animate="show"
       className={`navbar fixed-top navbar-expand-lg py-4 ${
-        isHome ? "bg-transparent" : "bg-white"
+        isHome ? "bg-transparent navbar-dark" : "bg-white navbar-light"
       }`}
     >
       <div className="container">
