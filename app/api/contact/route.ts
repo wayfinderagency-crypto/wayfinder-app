@@ -53,7 +53,7 @@ export async function POST(req: Request) {
         .union([z.string(), z.boolean()])
         .transform((v) => v === "true" || v === true)
         .default(false),
-      phonesCount: z.string().regex(/^\+?\d+$/),
+      phonesCount: z.string().regex(/^\d+\+?$/),
     });
 
     const rawValues: Record<string, string> = {};
