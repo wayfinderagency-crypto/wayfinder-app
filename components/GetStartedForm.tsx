@@ -116,7 +116,10 @@ function FormContent() {
 
         // Wyświetl alert z listą błędów
         const errorMessages = (data.errors || [])
-          .map((e: any) => `${e.field}: ${e.message}`)
+          .map(
+            (e: { field: string; message: string }) =>
+              `${e.field}: ${e.message}`
+          )
           .join("\n");
         alert("Please correct the following fields:\n" + errorMessages);
       }
