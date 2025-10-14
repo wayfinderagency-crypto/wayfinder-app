@@ -100,21 +100,28 @@ function FormContent() {
     }
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        body: fd,
-      });
-
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
       const data = await res.json();
 
+      if (!res.ok) {
+        // np. walidacja lub inny błąd serwera
+        setErrors(data.errors || []);
+        const errorMessages = (data.errors || [])
+          .map(
+            (e: { field: string; message: string }) =>
+              `${e.field}: ${e.message}`
+          )
+          .join("\n");
+        alert("Please correct the following fields:\n" + errorMessages);
+        return;
+      }
+
       if (data.success) {
-        setStep(6); // przejście do Step6
-        setFormData(initialFormData); // reset formularza
-        setErrors([]); // wyczyść błędy
+        setStep(6);
+        setFormData(initialFormData);
+        setErrors([]);
       } else {
         setErrors(data.errors || []);
-
-        // Wyświetl alert z listą błędów
         const errorMessages = (data.errors || [])
           .map(
             (e: { field: string; message: string }) =>
