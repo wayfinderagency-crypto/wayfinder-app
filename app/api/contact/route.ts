@@ -114,9 +114,7 @@ export async function POST(req: Request) {
 
       phone: z
         .string()
-        .regex(/^\+?\d{7,15}$/, {
-          message: "Please enter a valid phone number.",
-        })
+        .max(50, { message: "Phone cannot exceed 50 characters." }) // opcjonalnie limit znaków
         .optional()
         .default(""),
 
