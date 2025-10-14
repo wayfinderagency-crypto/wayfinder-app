@@ -101,18 +101,27 @@ function FormContent() {
 
     try {
       const res = await fetch("/api/contact", { method: "POST", body: fd });
-      const data = await res.json();
+
+      let data: any = {};
+      // jeśli status 204 lub pusty, parsowanie JSON może rzucić
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
 
       if (!res.ok) {
-        // np. walidacja lub inny błąd serwera
-        setErrors(data.errors || []);
-        const errorMessages = (data.errors || [])
-          .map(
-            (e: { field: string; message: string }) =>
-              `${e.field}: ${e.message}`
-          )
-          .join("\n");
-        alert("Please correct the following fields:\n" + errorMessages);
+        // Walidacja lub inny błąd z backendu
+        const errorMessages = data.errors
+          ? data.errors
+              .map(
+                (e: { field: string; message: string }) =>
+                  `${e.field}: ${e.message}`
+              )
+              .join("\n")
+          : "Something went wrong while sending the form.";
+        alert(errorMessages);
+        setLoading(false);
         return;
       }
 
@@ -121,7 +130,6 @@ function FormContent() {
         setFormData(initialFormData);
         setErrors([]);
       } else {
-        setErrors(data.errors || []);
         const errorMessages = (data.errors || [])
           .map(
             (e: { field: string; message: string }) =>
@@ -129,10 +137,11 @@ function FormContent() {
           )
           .join("\n");
         alert("Please correct the following fields:\n" + errorMessages);
+        setErrors(data.errors || []);
       }
     } catch (err) {
       console.error(err);
-      alert("Unexpected error");
+      alert("Unexpected error. Please try again later.");
     } finally {
       setLoading(false);
     }
