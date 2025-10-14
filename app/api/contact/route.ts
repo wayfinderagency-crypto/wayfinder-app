@@ -58,7 +58,7 @@ export async function POST(req: Request) {
       phone_number: z
         .string()
         .regex(/^\+?\d{7,15}$/, {
-          message: "Please enter a valid phone number.",
+          message: "Please enter a valid phone number.(without spaces)",
         })
         .optional()
         .default(""),
@@ -70,15 +70,9 @@ export async function POST(req: Request) {
           message: "You must be at least 18 years old.",
         }),
 
-      // Format: dd.mm.yyyy
       timeAvailable: z
         .string()
-        .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
-          message: "Please enter a valid date in format dd.mm.yyyy.",
-        })
-        .refine((val) => !val || isValidDate(val), {
-          message: "This date does not exist.",
-        })
+        .max(200, { message: "Time available cannot exceed 200 characters." }) // opcjonalnie ograniczenie długości
         .optional()
         .default(""),
 
@@ -99,7 +93,10 @@ export async function POST(req: Request) {
       startDate: z
         .string()
         .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
-          message: "Start date must be in format dd.mm.yyyy.",
+          message: "Please enter a valid date in format dd.mm.yyyy.",
+        })
+        .refine((val) => !val || isValidDate(val), {
+          message: "This date does not exist.",
         })
         .optional()
         .default(""),
