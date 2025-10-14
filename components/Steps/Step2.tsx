@@ -14,10 +14,11 @@ export default function Step2({ data, onChange }: Step2Props) {
   return (
     <div className="step">
       <div className="mb-3">
-        <label className="form-label fs-5">
+        <label className="form-label fs-5" htmlFor="time">
           How much time do you have available to create content per day?
         </label>
         <input
+          id="time"
           type="text"
           className="form-control"
           value={data.timeAvailable}
@@ -26,8 +27,11 @@ export default function Step2({ data, onChange }: Step2Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">Origin</label>
+        <label className="form-label fs-5" htmlFor="origin">
+          Origin
+        </label>
         <input
+          id="origin"
           type="text"
           className="form-control"
           value={data.origin}
@@ -36,10 +40,11 @@ export default function Step2({ data, onChange }: Step2Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">
+        <label className="form-label fs-5" htmlFor="content">
           What type of content are you willing to create?
         </label>
         <input
+          id="content"
           type="text"
           className="form-control"
           value={data.contentType}
@@ -48,8 +53,11 @@ export default function Step2({ data, onChange }: Step2Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">How soon can you start?</label>
+        <label className="form-label fs-5" htmlFor="start">
+          How soon can you start?
+        </label>
         <input
+          id="start"
           type="text"
           placeholder="dd.mm.yyyy"
           className="form-control"

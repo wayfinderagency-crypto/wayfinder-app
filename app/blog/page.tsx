@@ -70,12 +70,15 @@ export default async function BlogPage({ searchParams }: Props) {
             Our <span className="fw-bold text-pink">Blog</span>
           </h1>
           <p className="fs-5 text-center">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            Learn about innovative tech solutions from Wayfinder Agency&rsquo;s
+            publications
           </p>
         </div>
 
         <div className="blog-page d-flex flex-column justify-content-center w-100 w-md-75 mx-auto">
-          {articles.length === 0 && <p>No articles found.</p>}
+          {articles.length === 0 && (
+            <p className="d-block mx-auto">No articles found.</p>
+          )}
 
           {articles.map((article) => (
             <div

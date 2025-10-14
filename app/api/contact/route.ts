@@ -37,6 +37,7 @@ export async function POST(req: Request) {
     const FormSchema = z.object({
       fullName: z.string().min(1),
       email: z.string().email(),
+      phone_number: z.string().optional().default(""),
       age: z.string().regex(/^\d+$/),
       timeAvailable: z.string().max(200).optional().default(""),
       origin: z.string().optional().default(""),

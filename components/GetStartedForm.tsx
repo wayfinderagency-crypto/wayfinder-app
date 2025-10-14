@@ -23,6 +23,7 @@ const stepVariants = {
 const initialFormData = {
   fullName: "",
   email: "",
+  phone_number: "",
   age: "",
   timeAvailable: "",
   origin: "",

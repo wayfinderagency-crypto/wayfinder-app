@@ -29,10 +29,11 @@ export default function Step3({ data, onChange }: Step3Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">
+        <label className="form-label fs-5" htmlFor="block">
           Do you need us to block any countries on OnlyFans?
         </label>
         <input
+          id="block"
           type="text"
           className="form-control"
           value={data.blockedCountries}

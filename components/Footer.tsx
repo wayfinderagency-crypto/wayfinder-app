@@ -15,7 +15,11 @@ export default function Footer() {
           />
           <div className="row justify-content-center align-items-center mt-4">
             <div className="col-auto">
-              <a className="nav-link fs-5 fw-bold" aria-current="page" href="#">
+              <a
+                className="nav-link fs-5 fw-bold"
+                aria-current="page"
+                href="https://www.wayfinder-agency.com/how-we-work"
+              >
                 How we work
               </a>
             </div>
@@ -23,7 +27,10 @@ export default function Footer() {
               <div className="vr"></div>
             </div>
             <div className="col-auto">
-              <a className="nav-link fs-5 fw-bold" href="#">
+              <a
+                className="nav-link fs-5 fw-bold"
+                href="https://www.wayfinder-agency.com/blog"
+              >
                 Blog
               </a>
             </div>
@@ -31,7 +38,10 @@ export default function Footer() {
               <div className="vr"></div>
             </div>
             <div className="col-auto">
-              <a className="nav-link fs-5 fw-bold" href="#">
+              <a
+                className="nav-link fs-5 fw-bold"
+                href="https://www.wayfinder-agency.com/#faq"
+              >
                 FAQ
               </a>
             </div>
@@ -39,14 +49,19 @@ export default function Footer() {
               <div className="vr"></div>
             </div>
             <div className="col-auto">
-              <a className="nav-link fs-5 fw-bold" href="#">
-                Contact Us
+              <a
+                className="nav-link fs-5 fw-bold"
+                href="https://www.wayfinder-agency.com/get-started"
+              >
+                Get started
               </a>
             </div>
           </div>
           <div className="row justify-content-center w-100 mt-4">
             <div className="col-auto">
-              <i className="fa-brands fa-instagram fs-3"></i>
+              <a href="https://www.instagram.com/wayfinder.management/">
+                <i className="fa-brands fa-instagram fs-3 text-white"></i>
+              </a>
             </div>
           </div>
         </div>

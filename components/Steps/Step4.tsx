@@ -9,10 +9,11 @@ export default function Step4({ data, onChange }: Step4Props) {
   return (
     <div className="step">
       <div className="mb-3">
-        <label className="form-label fs-5">
+        <label className="form-label fs-5" htmlFor="quality">
           What phone do you have? (camera quality)
         </label>
         <input
+          id="quality"
           type="text"
           className="form-control"
           value={data.phone}
@@ -21,10 +22,11 @@ export default function Step4({ data, onChange }: Step4Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">
-          Social media accounts (followers count)
+        <label className="form-label fs-5" htmlFor="ig">
+          Instagram name
         </label>
         <input
+          id="ig"
           type="text"
           className="form-control"
           value={data.socialMedia}
