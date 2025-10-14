@@ -34,6 +34,16 @@ export async function POST(req: Request) {
       );
     }
 
+    const isValidDate = (dateStr: string) => {
+      const [dd, mm, yyyy] = dateStr.split(".").map(Number);
+      const d = new Date(yyyy, mm - 1, dd);
+      return (
+        d.getFullYear() === yyyy &&
+        d.getMonth() === mm - 1 &&
+        d.getDate() === dd
+      );
+    };
+
     const FormSchema = z.object({
       fullName: z
         .string()
@@ -65,6 +75,9 @@ export async function POST(req: Request) {
         .string()
         .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
           message: "Please enter a valid date in format dd.mm.yyyy.",
+        })
+        .refine((val) => !val || isValidDate(val), {
+          message: "This date does not exist.",
         })
         .optional()
         .default(""),
@@ -139,11 +152,19 @@ export async function POST(req: Request) {
 
     const parsed = FormSchema.safeParse(rawValues);
     if (!parsed.success) {
-      console.error("Validation failed:", parsed.error.flatten());
-      return NextResponse.json(
-        { success: false, errors: parsed.error.flatten().fieldErrors },
-        { status: 400 }
-      );
+      const errors: { field: string; message: string }[] = [];
+
+      const flattened = parsed.error.flatten(); // Zwraca { fieldErrors: Record<string,string[]>, formErrors: string[] }
+
+      for (const [field, messages] of Object.entries(flattened.fieldErrors)) {
+        if (messages) {
+          messages.forEach((msg: string) =>
+            errors.push({ field, message: msg })
+          );
+        }
+      }
+
+      return NextResponse.json({ success: false, errors }, { status: 400 });
     }
 
     const validData = parsed.data;
@@ -175,7 +196,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Unexpected error:", err);
-
     return NextResponse.json(
       {
         success: false,
