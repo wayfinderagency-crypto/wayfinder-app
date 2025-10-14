@@ -35,26 +35,100 @@ export async function POST(req: Request) {
     }
 
     const FormSchema = z.object({
-      fullName: z.string().min(1),
-      email: z.string().email(),
-      phone_number: z.string().optional().default(""),
-      age: z.string().regex(/^\d+$/),
-      timeAvailable: z.string().max(200).optional().default(""),
-      origin: z.string().optional().default(""),
-      contentType: z.string().optional().default(""),
-      startDate: z.string().optional().default(""),
+      fullName: z
+        .string()
+        .min(1, { message: "Full name is required." })
+        .max(100, { message: "Full name cannot exceed 100 characters." }),
+
+      email: z
+        .string()
+        .email({ message: "Please enter a valid email address." })
+        .max(150, { message: "Email address is too long." }),
+
+      phone_number: z
+        .string()
+        .regex(/^\+?\d{7,15}$/, {
+          message: "Please enter a valid phone number.",
+        })
+        .optional()
+        .default(""),
+
+      age: z
+        .string()
+        .regex(/^\d+$/, { message: "Age must be a valid number." })
+        .refine((val) => parseInt(val) >= 18, {
+          message: "You must be at least 18 years old.",
+        }),
+
+      // Format: dd.mm.yyyy
+      timeAvailable: z
+        .string()
+        .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
+          message: "Please enter a valid date in format dd.mm.yyyy.",
+        })
+        .optional()
+        .default(""),
+
+      origin: z
+        .string()
+        .max(100, { message: "Origin field is too long." })
+        .optional()
+        .default(""),
+
+      contentType: z
+        .string()
+        .max(100, {
+          message: "Content type must be shorter than 100 characters.",
+        })
+        .optional()
+        .default(""),
+
+      startDate: z
+        .string()
+        .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
+          message: "Start date must be in format dd.mm.yyyy.",
+        })
+        .optional()
+        .default(""),
+
       hasOnlyFans: z
         .union([z.string(), z.boolean()])
         .transform((v) => v === "true" || v === true)
         .default(false),
-      blockedCountries: z.string().optional().default(""),
-      phone: z.string().optional().default(""),
-      socialMedia: z.string().optional().default(""),
+
+      blockedCountries: z
+        .string()
+        .max(300, { message: "Blocked countries field is too long." })
+        .optional()
+        .default(""),
+
+      phone: z
+        .string()
+        .regex(/^\+?\d{7,15}$/, {
+          message: "Please enter a valid phone number.",
+        })
+        .optional()
+        .default(""),
+
+      socialMedia: z
+        .string()
+        .max(200, {
+          message: "Social media links must be shorter than 200 characters.",
+        })
+        .optional()
+        .default(""),
+
       tiktok: z
         .union([z.string(), z.boolean()])
         .transform((v) => v === "true" || v === true)
         .default(false),
-      phonesCount: z.string().regex(/^\d+\+?$/),
+
+      phonesCount: z
+        .string()
+        .regex(/^\d+$/, { message: "Please enter a valid number of phones." })
+        .refine((val) => parseInt(val) >= 1, {
+          message: "You must have at least one phone.",
+        }),
     });
 
     const rawValues: Record<string, string> = {};
@@ -101,8 +175,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Unexpected error:", err);
+
     return NextResponse.json(
-      { success: false, error: String(err) },
+      {
+        success: false,
+        message:
+          "Something went wrong while sending your application. Please try again later.",
+      },
       { status: 500 }
     );
   }

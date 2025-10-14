@@ -53,7 +53,15 @@ export default function HomePage() {
   return (
     <>
       <section className="hero d-flex align-items-center py-5 container-fluid position-relative">
-        <video autoPlay muted loop className="hero-video">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          webkit-playsinline="true"
+          className="hero-video"
+        >
           <source
             src="https://res.cloudinary.com/da8w3pd4f/video/upload/v1759001231/Bikini_Model_Video_Ready_2_h5txod.webm"
             type="video/webm"

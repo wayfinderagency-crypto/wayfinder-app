@@ -14,6 +14,11 @@ import Step4 from "./Steps/Step4";
 import Step5 from "./Steps/Step5";
 import Step6 from "./Steps/Step6";
 
+type ApiError = {
+  field: string;
+  message: string;
+}[];
+
 const stepVariants = {
   initial: { opacity: 0, x: 50 },
   animate: { opacity: 1, x: 0 },
@@ -44,6 +49,9 @@ function FormContent() {
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
+
+  const [errors, setErrors] = useState<ApiError>([]);
+
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const step1Valid =
@@ -102,10 +110,15 @@ function FormContent() {
       if (data.success) {
         setStep(6); // przejście do Step6
         setFormData(initialFormData); // reset formularza
+        setErrors([]); // wyczyść błędy
       } else {
-        alert(
-          "Submission failed: " + JSON.stringify(data.errors || data.message)
-        );
+        setErrors(data.errors || []);
+
+        // Wyświetl alert z listą błędów
+        const errorMessages = (data.errors || [])
+          .map((e: any) => `${e.field}: ${e.message}`)
+          .join("\n");
+        alert("Please correct the following fields:\n" + errorMessages);
       }
     } catch (err) {
       console.error(err);
