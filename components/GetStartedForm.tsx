@@ -14,11 +14,8 @@ import Step4 from "./Steps/Step4";
 import Step5 from "./Steps/Step5";
 import Step6 from "./Steps/Step6";
 
-type ApiError = {
-  field: string;
-  message: string;
-}[];
-
+type ApiErrorItem = { field: string; message: string };
+type ApiError = ApiErrorItem[];
 type ApiResponse = {
   success: boolean;
   message?: string;
@@ -83,58 +80,55 @@ function FormContent() {
 
     setLoading(true);
 
-    const token = await executeRecaptcha("form_submit");
-
-    const fd = new FormData();
-    fd.append("recaptcha-token", token);
-
-    Object.entries(formData).forEach(([key, val]) => {
-      if (key === "pictures" && val instanceof FileList) {
-        Array.from(val).forEach((file) => fd.append("pictures", file));
-      } else if (val !== null) {
-        if (typeof val === "boolean") {
-          fd.append(key, val ? "true" : "false");
-        } else {
-          fd.append(key, String(val));
-        }
-      }
-    });
-
-    console.log("FormData being sent:");
-    for (const [key, val] of fd.entries()) {
-      console.log(key, val);
-    }
-
     try {
+      const token = await executeRecaptcha("form_submit");
+
+      const fd = new FormData();
+      fd.append("recaptcha-token", token);
+
+      Object.entries(formData).forEach(([key, val]) => {
+        if (key === "pictures" && val instanceof FileList) {
+          Array.from(val).forEach((file) => fd.append("pictures", file));
+        } else if (val !== null) {
+          fd.append(
+            key,
+            typeof val === "boolean" ? (val ? "true" : "false") : String(val)
+          );
+        }
+      });
+
       const res = await fetch("/api/contact", { method: "POST", body: fd });
 
+      // Bezpieczne parsowanie JSON
       let data: ApiResponse = { success: false };
-
       try {
         data = (await res.json()) as ApiResponse;
       } catch {
         data = { success: false, message: "Invalid server response" };
       }
 
+      // Obsługa błędów walidacyjnych / status != 200
       if (!res.ok) {
         const errorMessages = data.errors
           ? data.errors.map((e) => `${e.field}: ${e.message}`).join("\n")
-          : data.message || "Something went wrong";
+          : data.message || "Something went wrong while sending the form.";
         alert(errorMessages);
         setLoading(false);
         return;
       }
 
       if (data.success) {
-        setStep(6);
-        setFormData(initialFormData);
+        setStep(6); // przejście do Step6
+        setFormData(initialFormData); // reset formularza
         setErrors([]);
       } else {
+        setErrors(data.errors || []);
+
         const errorMessages = (data.errors || [])
           .map((e) => `${e.field}: ${e.message}`)
           .join("\n");
+
         alert("Please correct the following fields:\n" + errorMessages);
-        setErrors(data.errors || []);
       }
     } catch (err) {
       console.error(err);
