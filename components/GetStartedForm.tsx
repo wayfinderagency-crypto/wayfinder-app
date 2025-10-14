@@ -19,6 +19,12 @@ type ApiError = {
   message: string;
 }[];
 
+type ApiResponse = {
+  success: boolean;
+  message?: string;
+  errors?: ApiError;
+};
+
 const stepVariants = {
   initial: { opacity: 0, x: 50 },
   animate: { opacity: 1, x: 0 },
@@ -102,24 +108,18 @@ function FormContent() {
     try {
       const res = await fetch("/api/contact", { method: "POST", body: fd });
 
-      let data: any = {};
-      // jeśli status 204 lub pusty, parsowanie JSON może rzucić
+      let data: ApiResponse = { success: false };
+
       try {
-        data = await res.json();
+        data = (await res.json()) as ApiResponse;
       } catch {
-        data = {};
+        data = { success: false, message: "Invalid server response" };
       }
 
       if (!res.ok) {
-        // Walidacja lub inny błąd z backendu
         const errorMessages = data.errors
-          ? data.errors
-              .map(
-                (e: { field: string; message: string }) =>
-                  `${e.field}: ${e.message}`
-              )
-              .join("\n")
-          : "Something went wrong while sending the form.";
+          ? data.errors.map((e) => `${e.field}: ${e.message}`).join("\n")
+          : data.message || "Something went wrong";
         alert(errorMessages);
         setLoading(false);
         return;
@@ -131,10 +131,7 @@ function FormContent() {
         setErrors([]);
       } else {
         const errorMessages = (data.errors || [])
-          .map(
-            (e: { field: string; message: string }) =>
-              `${e.field}: ${e.message}`
-          )
+          .map((e) => `${e.field}: ${e.message}`)
           .join("\n");
         alert("Please correct the following fields:\n" + errorMessages);
         setErrors(data.errors || []);
