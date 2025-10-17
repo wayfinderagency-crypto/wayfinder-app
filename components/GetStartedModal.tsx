@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GetStartedForm from "./GetStartedForm";
-import GetStartedIntro from "./GetStartedIntro";
 import Image from "next/image";
 
 interface GetStartedModalProps {
@@ -14,17 +13,11 @@ export default function GetStartedModal({
   show,
   onClose,
 }: GetStartedModalProps) {
-  const [showForm, setShowForm] = useState(false);
-
   useEffect(() => {
     document.body.style.overflow = show ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [show]);
-
-  useEffect(() => {
-    if (!show) setShowForm(false);
   }, [show]);
 
   if (!show) return null;
@@ -62,11 +55,7 @@ export default function GetStartedModal({
           </div>
 
           <div className="modal-body d-flex flex-column justify-content-center align-items-center text-center flex-grow-1">
-            {!showForm ? (
-              <GetStartedIntro onNext={() => setShowForm(true)} />
-            ) : (
-              <GetStartedForm />
-            )}
+            <GetStartedForm />
           </div>
         </div>
       </div>

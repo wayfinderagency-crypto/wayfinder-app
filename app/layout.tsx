@@ -75,6 +75,7 @@ export default function RootLayout({
           name="keywords"
           content="OnlyFans agency, OnlyFans management, marketing, growth, content creators, influencers, models, USA, UK, Australia"
         />
+        <link rel="canonical" href="https://wayfinder-agency.com/" />
       </head>
       <body className="bg-white text-black " style={{ margin: 0 }}>
         <ClientWrapper>{children}</ClientWrapper>
