@@ -333,6 +333,13 @@ p {
   background-size: cover;
   background-attachment: fixed;
 }
+
+@supports (-webkit-touch-callout: none) {
+  .cta-bg {
+    background-attachment: scroll;
+  }
+}
+
 .cta-opacity {
   position: absolute;
   height: 100%;
