@@ -109,7 +109,7 @@ function FormContent() {
       }
 
       if (data.success) {
-        setStep(6); // przejście do Step6
+        setStep(4); // przejście do Step4
         setFormData(initialFormData); // reset formularza
         setErrors([]);
       } else {
