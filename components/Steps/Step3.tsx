@@ -1,56 +1,33 @@
-type Step3Fields = "hasOnlyFans" | "blockedCountries" | "pictures";
+type Step3Fields = "long_text";
 
 type Step3Props = {
-  data: {
-    hasOnlyFans: boolean;
-    blockedCountries: string;
-    pictures: FileList | null;
-  };
-  onChange: (
-    field: Step3Fields,
-    value: boolean | string | FileList | null
-  ) => void;
+  data: { long_text: string };
+  onChange: (field: Step3Fields, value: string) => void;
 };
 
 export default function Step3({ data, onChange }: Step3Props) {
   return (
     <div className="step">
-      <div className="form-check mb-3">
-        <input
-          type="checkbox"
-          className="form-check-input bg-pink"
-          id="onlyfans"
-          checked={data.hasOnlyFans}
-          onChange={(e) => onChange("hasOnlyFans", e.target.checked)}
-        />
-        <label className="form-check-label fs-5" htmlFor="onlyfans">
-          Do you have an OnlyFans account currently?
-        </label>
-      </div>
-
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="block">
-          Do you need us to block any countries on OnlyFans?
+        <label className="form-label fs-5" htmlFor="of">
+          Why do you want to start on OnlyFans? Do you already have an account?
+          What&rsquo;s your goal? Feel free to share any details that come to
+          mind.
         </label>
-        <input
-          id="block"
-          type="text"
+        <textarea
+          name="of"
+          id="of"
           className="form-control"
-          value={data.blockedCountries}
-          onChange={(e) => onChange("blockedCountries", e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label fs-5">
-          Please attach pictures of yourself (3-5 Non-nude)
-        </label>
-        <input
-          type="file"
-          multiple
-          className="form-control"
-          onChange={(e) => onChange("pictures", e.target.files)}
-        />
+          value={data.long_text}
+          onChange={(e) => onChange("long_text", e.target.value)}
+        ></textarea>
+        <p className="text-secondary">
+          Note: This field isn&rsquo;t required. If you can&rsquo;t think of
+          anything, just skip it! 🙂
+        </p>
+        <p className="fs-5 text-center">
+          Feel free to share more information with us!
+        </p>
       </div>
     </div>
   );

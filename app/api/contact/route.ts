@@ -13,10 +13,11 @@ export async function POST(req: Request) {
       console.log(key, val);
     }
 
+    // reCAPTCHA
     const token = formData.get("recaptcha-token")?.toString();
     if (!token) {
       return NextResponse.json(
-        { success: false, message: "No recaptcha" },
+        { success: false, message: "No recaptcha token provided." },
         { status: 400 }
       );
     }
@@ -29,39 +30,21 @@ export async function POST(req: Request) {
 
     if (!recaptchaData.success || recaptchaData.score < 0.5) {
       return NextResponse.json(
-        { success: false, message: "Recaptcha failed", recaptchaData },
+        {
+          success: false,
+          message: "Recaptcha validation failed.",
+          recaptchaData,
+        },
         { status: 400 }
       );
     }
 
-    const isValidDate = (dateStr: string) => {
-      const [dd, mm, yyyy] = dateStr.split(".").map(Number);
-      const d = new Date(yyyy, mm - 1, dd);
-      return (
-        d.getFullYear() === yyyy &&
-        d.getMonth() === mm - 1 &&
-        d.getDate() === dd
-      );
-    };
-
+    // Schemat danych
     const FormSchema = z.object({
       fullName: z
         .string()
         .min(1, { message: "Full name is required." })
         .max(100, { message: "Full name cannot exceed 100 characters." }),
-
-      email: z
-        .string()
-        .email({ message: "Please enter a valid email address." })
-        .max(150, { message: "Email address is too long." }),
-
-      phone_number: z
-        .string()
-        .regex(/^\+?\d{7,15}$/, {
-          message: "Please enter a valid phone number.(without spaces)",
-        })
-        .optional()
-        .default(""),
 
       age: z
         .string()
@@ -70,87 +53,57 @@ export async function POST(req: Request) {
           message: "You must be at least 18 years old.",
         }),
 
-      timeAvailable: z
-        .string()
-        .max(200, { message: "Time available cannot exceed 200 characters." }) // opcjonalnie ograniczenie długości
-        .optional()
-        .default(""),
-
       origin: z
         .string()
-        .max(100, { message: "Origin field is too long." })
+        .max(100, { message: "Origin cannot exceed 100 characters." })
         .optional()
         .default(""),
 
-      contentType: z
+      instagram: z
         .string()
-        .max(100, {
-          message: "Content type must be shorter than 100 characters.",
-        })
+        .max(150, { message: "Instagram handle is too long." })
         .optional()
         .default(""),
 
-      startDate: z
+      phone_number: z
         .string()
-        .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
-          message: "Please enter a valid date in format dd.mm.yyyy.",
-        })
-        .refine((val) => !val || isValidDate(val), {
-          message: "This date does not exist.",
-        })
+        .min(3, { message: "Phone number is too short." })
+        .refine(
+          (val) => {
+            const digitsOnly = val.replace(/\D/g, "");
+            return digitsOnly.length >= 6;
+          },
+          { message: "Please enter a valid phone number." }
+        )
+        .max(50, { message: "Phone number is too long." })
         .optional()
         .default(""),
 
-      hasOnlyFans: z
-        .union([z.string(), z.boolean()])
-        .transform((v) => v === "true" || v === true)
-        .default(false),
-
-      blockedCountries: z
+      email: z
         .string()
-        .max(300, { message: "Blocked countries field is too long." })
+        .email({ message: "Please enter a valid email address." })
+        .max(150, { message: "Email address is too long." }),
+
+      long_text: z
+        .string()
+        .max(1000, { message: "Message cannot exceed 1000 characters." })
         .optional()
         .default(""),
-
-      phone: z
-        .string()
-        .max(50, { message: "Phone cannot exceed 50 characters." }) // opcjonalnie limit znaków
-        .optional()
-        .default(""),
-
-      socialMedia: z
-        .string()
-        .max(200, {
-          message: "Social media links must be shorter than 200 characters.",
-        })
-        .optional()
-        .default(""),
-
-      tiktok: z
-        .union([z.string(), z.boolean()])
-        .transform((v) => v === "true" || v === true)
-        .default(false),
-
-      phonesCount: z
-        .string()
-        .regex(/^\d+$/, { message: "Please enter a valid number of phones." })
-        .refine((val) => parseInt(val) >= 1, {
-          message: "You must have at least one phone.",
-        }),
     });
 
+    // Wczytanie danych
     const rawValues: Record<string, string> = {};
     formData.forEach((val, key) => {
-      if (key !== "pictures" && key !== "recaptcha-token")
+      if (key !== "pictures" && key !== "recaptcha-token") {
         rawValues[key] = val.toString();
+      }
     });
 
+    // Walidacja
     const parsed = FormSchema.safeParse(rawValues);
     if (!parsed.success) {
       const errors: { field: string; message: string }[] = [];
-
-      const flattened = parsed.error.flatten(); // Zwraca { fieldErrors: Record<string,string[]>, formErrors: string[] }
-
+      const flattened = parsed.error.flatten();
       for (const [field, messages] of Object.entries(flattened.fieldErrors)) {
         if (messages) {
           messages.forEach((msg: string) =>
@@ -164,7 +117,7 @@ export async function POST(req: Request) {
 
     const validData = parsed.data;
 
-    // Pliki
+    // Obsługa załączników (zdjęć)
     const pictures = formData.getAll("pictures") as File[];
     const attachments = await Promise.all(
       pictures.map(async (file) => ({
@@ -173,13 +126,19 @@ export async function POST(req: Request) {
       }))
     );
 
+    // Treść wiadomości e-mail
     const html = `
       <h2>New Model Application</h2>
-      ${Object.entries(validData)
-        .map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`)
-        .join("")}
+      <p><strong>Full name:</strong> ${validData.fullName}</p>
+      <p><strong>Age:</strong> ${validData.age}</p>
+      <p><strong>Origin:</strong> ${validData.origin}</p>
+      <p><strong>Instagram:</strong> ${validData.instagram}</p>
+      <p><strong>Phone number:</strong> ${validData.phone_number}</p>
+      <p><strong>Email:</strong> ${validData.email}</p>
+      <p><strong>Message:</strong> ${validData.long_text}</p>
     `;
 
+    // Wysyłka przez Resend
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "wayfinderagency@gmail.com",

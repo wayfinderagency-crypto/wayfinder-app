@@ -11,8 +11,6 @@ import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
-import Step5 from "./Steps/Step5";
-import Step6 from "./Steps/Step6";
 
 type ApiErrorItem = { field: string; message: string };
 type ApiError = ApiErrorItem[];
@@ -30,20 +28,13 @@ const stepVariants = {
 
 const initialFormData = {
   fullName: "",
-  email: "",
-  phone_number: "",
   age: "",
-  timeAvailable: "",
   origin: "",
-  contentType: "",
-  startDate: "",
-  hasOnlyFans: false,
-  blockedCountries: "",
+  instagram: "",
+  phone_number: "",
+  email: "",
   pictures: null as FileList | null,
-  phone: "",
-  socialMedia: "",
-  tiktok: false,
-  phonesCount: "1",
+  long_text: "",
 };
 
 type FormValue = string | boolean | FileList | null;
@@ -57,8 +48,8 @@ function FormContent() {
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const step1Valid =
-    formData.fullName.trim() !== "" && formData.email.trim() !== "";
+  const step1Valid = formData.fullName.trim() !== "";
+  const step2Valid = formData.email.trim() !== "";
 
   const handleChange = (field: string, value: FormValue) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -183,34 +174,12 @@ function FormContent() {
               animate="animate"
               exit="exit"
             >
-              <Step4 data={formData} onChange={handleChange} />
-            </motion.div>
-          )}
-          {step === 5 && (
-            <motion.div
-              key="step5"
-              variants={stepVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Step5 data={formData} onChange={handleChange} />
-            </motion.div>
-          )}
-          {step === 6 && (
-            <motion.div
-              key="step6"
-              variants={stepVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Step6 onRestart={resetForm} />
+              <Step4 onRestart={resetForm} />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {step < 6 && (
+        {step < 4 && (
           <div className="mt-5 d-flex justify-content-between w-100">
             {step > 1 ? (
               <button
@@ -223,11 +192,13 @@ function FormContent() {
               <div style={{ width: "45%" }} />
             )}
 
-            {step < 5 ? (
+            {step < 3 ? (
               <button
                 className="btn fs-5 px-4 rounded-5 w-45"
                 onClick={nextStep}
-                disabled={step === 1 && !step1Valid}
+                disabled={
+                  (step === 1 && !step1Valid) || (step === 2 && !step2Valid)
+                }
               >
                 Next
               </button>

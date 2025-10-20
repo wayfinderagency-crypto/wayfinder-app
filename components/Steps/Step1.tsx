@@ -1,7 +1,12 @@
-type Step1Fields = "fullName" | "email" | "age" | "phone_number";
+type Step1Fields = "fullName" | "age" | "instagram" | "origin";
 
 type Step1Props = {
-  data: { fullName: string; email: string; age: string; phone_number: string };
+  data: {
+    fullName: string;
+    age: string;
+    instagram: string;
+    origin: string;
+  };
   onChange: (field: Step1Fields, value: string) => void;
 };
 
@@ -15,7 +20,7 @@ export default function Step1({ data, onChange }: Step1Props) {
 
       <div className="mb-3">
         <label className="form-label fs-5" htmlFor="name">
-          Full Name *
+          What&rsquo;s your name? *
         </label>
         <input
           id="name"
@@ -27,34 +32,8 @@ export default function Step1({ data, onChange }: Step1Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="email">
-          Email *
-        </label>
-        <input
-          id="email"
-          type="email"
-          className="form-control"
-          value={data.email}
-          onChange={(e) => onChange("email", e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="phone_number">
-          Phone number
-        </label>
-        <input
-          id="phone_number"
-          type="text"
-          className="form-control"
-          value={data.phone_number}
-          onChange={(e) => onChange("phone_number", e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
         <label className="form-label fs-5" htmlFor="age">
-          Age
+          How old are you?
         </label>
         <input
           id="age"
@@ -63,6 +42,37 @@ export default function Step1({ data, onChange }: Step1Props) {
           value={data.age}
           onChange={(e) => onChange("age", e.target.value)}
         />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label fs-5" htmlFor="origin">
+          Origin
+        </label>
+        <input
+          id="origin"
+          type="text"
+          className="form-control"
+          value={data.origin}
+          onChange={(e) => onChange("origin", e.target.value)}
+        />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label fs-5" htmlFor="ig">
+          What&rsquo;s your Instagram handle?
+        </label>
+        <input
+          id="ig"
+          type="text"
+          className="form-control"
+          value={data.instagram}
+          onChange={(e) => onChange("instagram", e.target.value)}
+        />
+        <p className="text-secondary">
+          <span className="text-danger">Important</span>: Please provide your
+          username. We don&rsquo;t use this account for OF, but only to verify
+          that you&rsquo;re a real person
+        </p>
       </div>
     </div>
   );

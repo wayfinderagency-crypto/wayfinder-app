@@ -1,38 +1,13 @@
-type Step4Fields = "phone" | "socialMedia";
-
-type Step4Props = {
-  data: { phone: string; socialMedia: string };
-  onChange: (field: Step4Fields, value: string) => void;
-};
-
-export default function Step4({ data, onChange }: Step4Props) {
+export default function Step4({ onRestart }: { onRestart: () => void }) {
   return (
-    <div className="step">
-      <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="quality">
-          What phone do you have? (camera quality)
-        </label>
-        <input
-          id="quality"
-          type="text"
-          className="form-control"
-          value={data.phone}
-          onChange={(e) => onChange("phone", e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="ig">
-          Instagram name
-        </label>
-        <input
-          id="ig"
-          type="text"
-          className="form-control"
-          value={data.socialMedia}
-          onChange={(e) => onChange("socialMedia", e.target.value)}
-        />
-      </div>
+    <div className="text-center text-black">
+      <i className="fa-solid fa-paper-plane text-pink d-block mx-auto display-4 mb-3"></i>
+      <h2 className="fw-bold">
+        Form <span className="text-pink">submitted</span>!
+      </h2>
+      <p className="fs-5">
+        Thank you for completing the form. We will contact you shortly.
+      </p>
     </div>
   );
 }

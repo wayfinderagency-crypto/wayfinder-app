@@ -1,69 +1,61 @@
-type Step2Fields = "timeAvailable" | "origin" | "contentType" | "startDate";
+type Step2Fields = "phone_number" | "email" | "pictures";
 
 type Step2Props = {
   data: {
-    timeAvailable: string;
-    origin: string;
-    contentType: string;
-    startDate: string;
+    phone_number: string;
+    email: string;
+    pictures: FileList | null;
   };
-  onChange: (field: Step2Fields, value: string) => void;
+  onChange: (
+    field: Step2Fields,
+    value: boolean | string | FileList | null
+  ) => void;
 };
 
 export default function Step2({ data, onChange }: Step2Props) {
   return (
     <div className="step">
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="time">
-          How much time do you have available to create content per day?
+        <label className="form-label fs-5" htmlFor="phone_number">
+          What&rsquo;s your phone number?
         </label>
         <input
-          id="time"
+          id="phone_number"
           type="text"
           className="form-control"
-          value={data.timeAvailable}
-          onChange={(e) => onChange("timeAvailable", e.target.value)}
+          value={data.phone_number}
+          onChange={(e) => onChange("phone_number", e.target.value)}
+        />
+        <p className="text-secondary">
+          Disclaimer: We need this number to be able to contact you via text
+          message.
+        </p>
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label fs-5" htmlFor="email">
+          Email address:*
+        </label>
+        <input
+          id="email"
+          type="email"
+          className="form-control"
+          value={data.email}
+          onChange={(e) => onChange("email", e.target.value)}
         />
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="origin">
-          Origin
+        <label className="form-label fs-5">
+          Please attach pictures of yourself (3-5 Non-nude)
         </label>
         <input
-          id="origin"
-          type="text"
+          type="file"
+          multiple
           className="form-control"
-          value={data.origin}
-          onChange={(e) => onChange("origin", e.target.value)}
+          onChange={(e) => onChange("pictures", e.target.files)}
         />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="content">
-          What type of content are you willing to create?
-        </label>
-        <input
-          id="content"
-          type="text"
-          className="form-control"
-          value={data.contentType}
-          onChange={(e) => onChange("contentType", e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="start">
-          How soon can you start?
-        </label>
-        <input
-          id="start"
-          type="text"
-          placeholder="dd.mm.yyyy"
-          className="form-control"
-          value={data.startDate}
-          onChange={(e) => onChange("startDate", e.target.value)}
-        />
+        <p className="text-secondary">Not mandatory, but helpful!</p>
       </div>
     </div>
   );
