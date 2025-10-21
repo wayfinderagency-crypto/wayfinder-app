@@ -130,7 +130,7 @@ function FormContent() {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center w-100 p-3">
+    <div className="d-flex flex-column align-items-center w-100 p-3 pt-5 pt-md-3">
       <div className="w-100" style={{ maxWidth: 500 }}>
         <AnimatePresence mode="wait">
           {step === 1 && (

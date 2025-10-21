@@ -16,7 +16,7 @@ export default function Step2({ data, onChange }: Step2Props) {
   return (
     <div className="step">
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="phone_number">
+        <label className="form-label custom-fs" htmlFor="phone_number">
           What&rsquo;s your phone number?
         </label>
         <input
@@ -33,7 +33,7 @@ export default function Step2({ data, onChange }: Step2Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="email">
+        <label className="form-label custom-fs" htmlFor="email">
           Email address:*
         </label>
         <input
@@ -46,7 +46,7 @@ export default function Step2({ data, onChange }: Step2Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5">
+        <label className="form-label custom-fs">
           Please attach pictures of yourself (3-5 Non-nude)
         </label>
         <input

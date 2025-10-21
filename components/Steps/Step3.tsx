@@ -9,7 +9,7 @@ export default function Step3({ data, onChange }: Step3Props) {
   return (
     <div className="step">
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="of">
+        <label className="form-label custom-fs" htmlFor="of">
           Why do you want to start on OnlyFans? Do you already have an account?
           What&rsquo;s your goal? Feel free to share any details that come to
           mind.
@@ -25,7 +25,7 @@ export default function Step3({ data, onChange }: Step3Props) {
           Note: This field isn&rsquo;t required. If you can&rsquo;t think of
           anything, just skip it! 🙂
         </p>
-        <p className="fs-5 text-center">
+        <p className="custom-fs text-center">
           Feel free to share more information with us!
         </p>
       </div>

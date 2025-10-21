@@ -19,7 +19,7 @@ export default function Step1({ data, onChange }: Step1Props) {
       <p className="fs-5 mn-3">OnlyFans Model Application Form</p>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="name">
+        <label className="form-label custom-fs" htmlFor="name">
           What&rsquo;s your name? *
         </label>
         <input
@@ -32,7 +32,7 @@ export default function Step1({ data, onChange }: Step1Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="age">
+        <label className="form-label custom-fs" htmlFor="age">
           How old are you?
         </label>
         <input
@@ -45,7 +45,7 @@ export default function Step1({ data, onChange }: Step1Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="origin">
+        <label className="form-label custom-fs" htmlFor="origin">
           Origin
         </label>
         <input
@@ -58,7 +58,7 @@ export default function Step1({ data, onChange }: Step1Props) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label fs-5" htmlFor="ig">
+        <label className="form-label custom-fs" htmlFor="ig">
           What&rsquo;s your Instagram handle?
         </label>
         <input
