@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://wayfinder-agency.com", // <- zamień na swój adres strony
+  siteUrl: "wayfinder-agency.com", // <- zamień na swój adres strony
   generateRobotsTxt: true, // tworzy automatycznie robots.txt
   changefreq: "weekly", // jak często Google powinien sprawdzać strony
   priority: 0.8, // domyślny priorytet stron
