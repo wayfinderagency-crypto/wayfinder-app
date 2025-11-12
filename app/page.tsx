@@ -117,12 +117,6 @@ export default function HomePage() {
               <div className="col logos d-flex">
                 <div className="logo-slider">
                   <Image
-                    src="https://res.cloudinary.com/da8w3pd4f/image/upload/v1757954311/VOGUE_LOGO.svg_jih6nl.png"
-                    alt="Vouge"
-                    width={250}
-                    height={40}
-                  />
-                  <Image
                     src="https://res.cloudinary.com/da8w3pd4f/image/upload/v1757954310/Medium__website__logo.svg_idtvps.png"
                     alt="Medium"
                     width={250}
